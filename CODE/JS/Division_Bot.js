@@ -102,9 +102,8 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB) {
                var locateMember = Number(PartyMember.indexOf(SplitData[1])) + Number(PartyMember[1]) + 1;   // 배열에서 파티에 슬롯부분을 찾음
                var Member = [];
                Member.push(PartyMember[MPartyNum + 2], PartyMember[MPartyNum + 3], PartyMember[MPartyNum + 4], PartyMember[MPartyNum + 5], PartyMember[MPartyNum + 6], PartyMember[MPartyNum + 7], PartyMember[MPartyNum + 8]); // 맴버목록을 불러옴
-   
          
-            if(PartyMember[MPartyNum + 2] == sender) { // 리더일 경우
+            if(PartyMember[MPartyNum + 2] != sender) { // 리더일 경우
 
                   if(Member.indexOf(sender) != -1) {                // 참가 되있을 경우
 					 PartyMember[MPartyNum + 1] = Number(PartyMember[MPartyNum + 1]) - 1;
