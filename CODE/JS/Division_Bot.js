@@ -1,8 +1,30 @@
 /*
 KakaoTalk_Division_BOT
-By NOPE
+By NOPE & KOR_Di
 
 version 2.1.0
+
+안녕하세요! [[보낸사람]] 님!
+명령어 모음집 입니다! 
+너무 반복적으로 자주 사용하시면 밴망치 맞아요![[다음채팅]]=더 디비전 관련=
+!규칙
+KOR_Di BOT >> 오픈톡방 규칙을 불러옵니다.
+
+!상점정보 
+KOR_Di BOT >> 디비전 최신 상점정보를 불러옵니다.
+
+!필보지도 
+KOR_Di BOT >> 필드보스 주소를 불러옵니다.
+
+!딜연산
+KOR_Di BOT >> 딜연산 주소를 불러옵니다.[[다음채팅]]=커뮤니티 관련=
+!디코
+KOR_Di BOT >> 디스코드 초대링크를 불러옵니다.
+
+!카페
+KOR_Di BOT >> 카페링크를 불러옵니다.[[다음채팅]]=파티 관련=
+!파티
+NOPE BOT >> 파티 명령어 도움말을 불러옵니다.
 
 설명
 공백 두칸이 기준입니다.
@@ -22,6 +44,7 @@ version 2.1.0
 
 var PartyList = {};
 var PartyMember = {};
+const INIT = ["비어있음", "비어있음", "비어있음", "예비", "예비"];
 
 function isExistParty(name) {
 	
@@ -47,11 +70,29 @@ function CountUser(name) {
 	
 }
 
+function isExistSlot(name, user, slotnum) {
+	
+	if(isExistParty(name)) {
+		
+		if(user == PartyMember[name][slotnum]) {
+		
+			return true;
+		
+		} else {
+		
+			return false;
+		
+		}
+		
+	}
+	
+}
+
 function isExistMember(name, user) {
 	
 	if(isExistParty(name)) {
 		
-		if(PartyMember[name].indexOf(user) != -1) {
+		if(user in PartyMember[name]) {
 		
 			return true;
 		
@@ -69,7 +110,7 @@ function isLeader(name, user) {
 	
 	if(isExistParty(name)) {
 		
-		if(user == PartyMember[name][1]) {
+		if(user == PartyList[name][2]) {
 		
 			return true;
 		
@@ -125,33 +166,44 @@ function dele(name, user, replier) {
 }
 
 function join(name, slotnum, user, replier) {
+	slotnum++;
 	
 	if(isExistParty(name)) {
 		
-		if(isExistMember(name, user)) {
+		if(!isLeader(name, user)) {
 			
-			if(CountUser(name) < 7) {
+			if(0<slotnum) {
+			
+				if(!isExistSlot(name, user, slotnum) || !isExistMember(name, user)) {
 				
-				PartyMember[name][0]++;
-				PartyList[name][slotnum] = user;
-				replier.reply("==파티참가완료==\n파티제목 - " + name + "\n파티시작시간 - " + PartyList[name][0] + "\n파티설명 - " + PartyList[name][1] + "\n==============\n리더. " + PartyMember[name][1] + "\n1. " + PartyMember[name][2] + "\n2. " + PartyMember[name][3] + "\n3. " + PartyMember[name][4] + "\n4. " + PartyMember[name][5] + "\n5. " + PartyMember[name][6]);
-				
+					if(CountUser(name) < 7) {
+					
+						PartyMember[name][0]++;
+						PartyMember[name][slotnum] = user;
+						replier.reply("==파티참가완료==\n파티제목 - " + name + "\n파티시작시간 - " + PartyList[name][0] + "\n파티설명 - " + PartyList[name][1] + "\n==============\n리더. " + PartyMember[name][1] + "\n1. " + PartyMember[name][2] + "\n2. " + PartyMember[name][3] + "\n3. " + PartyMember[name][4] + "\n4. " + PartyMember[name][5] + "\n5. " + PartyMember[name][6]);
+
+					} else {
+					
+						replier.reply("==파티참가실패==\n파티가 다 찼습니다!");
+					
+					}
+
+				} else {
+					
+					replier.reply("==파티참가실패==\n이미 파티에 있습니다!");
+					
+				}
+	
 			} else {
 				
-				replier.reply("==파티참가실패==\n파티가 다 찼습니다!");
+				replier.reply("==파티참가실패==\n슬롯 번호는 1 ~ 5 입니다!");
 				
 			}
 			
 		} else {
-			
-			if(isLeader(name, user)) {
-				
-				replier.reply("==파티참가실패==\n이미 파티에 있습니다!");
-				
-			}
-			
+		
 			replier.reply("==파티참가실패==\n리더 입니다!");
-			
+		
 		}
 		
 	} else {
@@ -168,9 +220,9 @@ function exit(name, user, replier) {
 		
 		if(!isLeader(name, user)) {
 			
-			if(isExistMember(name, user)) {
+			if(!isExistMember(name, user)) {
 				
-				PartyMember[name][PartyMember[name].indexOf(user)] = ""
+				PartyMember[name][PartyMember[name].indexOf(user)] = INIT[PartyMember[name].indexOf(user)]
 				PartyMember[name][0]--;
 				replier.reply("==파티나가기완료==");
 
