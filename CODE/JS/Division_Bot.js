@@ -63,6 +63,8 @@ By NOPE
 
 /상태
 >> 봇 정보를 불러옵니다.
+
+Utils.getHtmlFromWeb();
 */
 
 var PartyList = {};
@@ -273,7 +275,7 @@ function info(replier) {
 	var infoDeviceBL = Device.getBatteryLevel();
 	var infoDeviceBT = Device.getBatteryTemp();
 	
-	replier.reply("==BOT DEBUG MODE==\nJava Script: " + infoJs + "\nBOT BatteryLevel: " + infoDeviceBL + "\nBOT BatteryTemp: " + infoDeviceBT + "\n==================\nDict::PartyList - " + PartyList + "\n==================\nDict::PartyMember - " + PartyMember);
+	replier.reply("==BOT DEBUG MODE==\nJava Script: " + infoJs + "\nBOT BatteryLevel: " + infoDeviceBL + "%\nBOT BatteryTemp: " + infoDeviceBT + "℃\n==================\nDict::PartyList - " + PartyList + "\nDict::PartyMember - " + PartyMember);
 	
 }
 
