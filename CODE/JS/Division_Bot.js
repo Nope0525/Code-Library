@@ -267,7 +267,7 @@ function exte(name, replier) {
 	
 }
 
-function info(sender, replier) {
+function info(replier) {
 	
 	var infoJs = Bot.getJsVersion();
 	var infoDeviceBL = Device.getBatteryLevel();
