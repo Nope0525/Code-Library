@@ -63,12 +63,10 @@ By NOPE
 
 /상태
 >> 봇 정보를 불러옵니다.
-
-Utils.getHtmlFromWeb();
 */
 
-var PartyList = {};
-var PartyMember = {};
+var PartyList;
+var PartyMember;
 const INIT = ["비어있음", "비어있음", "비어있음", "예비", "예비"];
 
 function isExistParty(name) {	// 파티리스트에 파티가 있는지 없는지 확인
@@ -120,7 +118,7 @@ function crea(name, time, discription, user, replier) {
 		PartyList[name] = [time, discription, user];
 		PartyMember[name] = [1, user, "비어있음", "비어있음", "비어있음", "예비", "예비"];
 
-		replier.reply("==파티생성완료==\n파티제목 - " + name + "\n파티시작시간 - " + PartyList[name][0] + "\n파티설명 - " + PartyList[name][1] + "\n==============\n리더. " + PartyList[name][2]);
+		replier.reply("==파티생성완료==" + Utils.compress() + "\n파티제목 - " + name + "\n파티시작시간 - " + PartyList[name][0] + "\n파티설명 - " + PartyList[name][1] + "\n==============\n리더. " + PartyList[name][2]);
 
 	} else {
 
@@ -170,7 +168,7 @@ function join(name, slotnum, user, replier) {
 					
 						PartyMember[name][0]++;
 						PartyMember[name][slotnum] = user;
-						replier.reply("==파티참가완료==\n파티제목 - " + name + "\n파티시작시간 - " + PartyList[name][0] + "\n파티설명 - " + PartyList[name][1] + "\n==============\n리더. " + PartyMember[name][1] + "\n1. " + PartyMember[name][2] + "\n2. " + PartyMember[name][3] + "\n3. " + PartyMember[name][4] + "\n4. " + PartyMember[name][5] + "\n5. " + PartyMember[name][6]);
+						replier.reply("==파티참가완료==" + Utils.compress() + "\n파티제목 - " + name + "\n파티시작시간 - " + PartyList[name][0] + "\n파티설명 - " + PartyList[name][1] + "\n==============\n리더. " + PartyMember[name][1] + "\n1. " + PartyMember[name][2] + "\n2. " + PartyMember[name][3] + "\n3. " + PartyMember[name][4] + "\n4. " + PartyMember[name][5] + "\n5. " + PartyMember[name][6]);
 
 					} else {
 					
@@ -258,8 +256,9 @@ function exte(name, replier) {
 		var partyinfo_time = PartyList[name][0];
 		var partyinfo_discription = PartyList[name][1];
 		var partyinfo_leader = PartyList[name][2];
+		var 
 		
-		replier.reply("==파티정보==\n파티제목 - " + partyname + "\n파티시작시간 - " + partyinfo_time + "\n파티설명 - " + partyinfo_discription + "\n========\n리더 - " + partyinfo_leader + "\n1. " + PartyMember[name][2] + "\n2. " + PartyMember[name][3] + "\n3. " + PartyMember[name][4] + "\n4. " + PartyMember[name][5] + "\n5. " + PartyMember[name][6]);
+		replier.reply("==파티정보==" + Utils.compress() + "\n파티제목 - " + partyname + "\n파티시작시간 - " + partyinfo_time + "\n파티설명 - " + partyinfo_discription + "\n========\n리더 - " + partyinfo_leader + "\n1. " + PartyMember[name][2] + "\n2. " + PartyMember[name][3] + "\n3. " + PartyMember[name][4] + "\n4. " + PartyMember[name][5] + "\n5. " + PartyMember[name][6]);
 		
 	} else {
 		
@@ -275,7 +274,7 @@ function info(replier) {
 	var infoDeviceBL = Device.getBatteryLevel();
 	var infoDeviceBT = Device.getBatteryTemp();
 	
-	replier.reply("==BOT DEBUG MODE==\nJava Script: " + infoJs + "\nBOT BatteryLevel: " + infoDeviceBL + "%\nBOT BatteryTemp: " + infoDeviceBT + "℃\n==================\nDict::PartyList - " + PartyList + "\nDict::PartyMember - " + PartyMember);
+	replier.reply("==BOT DEBUG MODE==" + Utils.compress() + "\nJava Script: " + infoJs + "\nBOT BatteryLevel: " + infoDeviceBL + "%\nBOT BatteryTemp: " + infoDeviceBT + "℃\n==================\nDict::PartyList - " + PartyList + "\nDict::PartyMember - " + PartyMember);
 	
 }
 
@@ -312,9 +311,76 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB) {
 			break;	
 			
 			case "/정보":
-				info(replier);										// 파티l						- 파티리스트
+				info(replier);										// 정보							- 파티봇 정보
 			break;
 			
+		}
+			
+		if(msg == "!파티") {
+			replier.reply("==파티 도움말==" + Utils.compress()+"\n\
+KakaoTalk_Party_BOT\n\
+By NOPE\n\
+파티 매니저 봇 입니다!\n\
+너무 반복적으로 자주 사용하시면 밴망치 맞아요!\n\
+\n\
+공백 두번을 기준으로 합니다!\n\
+\n\
+/파티c [파티제목]  [파티시작시간]  [파티설명]\n\
+>> 파티를 생성합니다.\n\
+\n\
+/파티j [파티제목]  [슬롯번호]\n\
+>> 파티슬롯에 참가합니다\n\
+\n\
+/파티d [파티제목]\n\
+>> 파티를 삭제합니다.\n\
+\n\
+/파티e [파티제목]\n\
+>> 파티를 나갑니다.\n\
+\n\
+/파티x [파티제목]\n\
+>> 파티정보를 불러옵니다.\n\
+\n\
+/파티l\n\
+>> 파티리스트를 불러옵니다.\n\
+\n\
+/상태\n\
+>> 봇 정보를 불러옵니다.");
+		}
+			
+		if(msg == "!도움말") {
+				replier.reply("==명령어 도움말==" + Utils.compress()+"\n\
+KakaoTalk_Division_BOT\n\
+By KOR_Di\n\
+\n\
+version 2.1.1\n\
+\n\
+안녕하세요! [[보낸사람]] 님!\n\
+명령어 모음집 입니다! \n\
+너무 반복적으로 자주 사용하시면 밴망치 맞아요!\n\
+\n\
+=더 디비전 관련=\n\
+!규칙\n\
+>> 오픈톡방 규칙을 불러옵니다.\n\
+\n\
+!상점정보 \n\
+>> 디비전 최신 상점정보를 불러옵니다.\n\
+\n\
+!필보지도 \n\
+>> 필드보스 주소를 불러옵니다.\n\
+\n\
+!딜연산\n\
+>> 딜연산 주소를 불러옵니다.\n\
+\n\
+=커뮤니티 관련=\n\
+!디코\n\
+>> 디스코드 초대링크를 불러옵니다.\n\
+\n\
+!카페\n\
+>> 카페링크를 불러옵니다.\n\
+\n\
+=파티 관련=\n\
+!파티\n\
+>> 파티 명령어 도움말을 불러옵니다.");
 		}
 		
 	}

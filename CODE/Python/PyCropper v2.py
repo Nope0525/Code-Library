@@ -18,12 +18,15 @@ OUTPUT_PATH = "T:/OUTPUT"
 # 파일 카운트
 filecount = 0
 endfilecount = 0
+def founder(path, ext):
+    for (path, dir, files) in os.walk(path):
+        for filename in files:
+            ext = os.path.splitext(filename)[-1]
+            if '.' + ext:
+                endfilecount = endfilecount + 1
 
-for (path, dir, files) in os.walk(PATH):
-    for filename in files:
-        ext = os.path.splitext(filename)[-1]
-        if ext == '.txt':
-            endfilecount = endfilecount + 1
+    return endfilecount
+
 
 def progressBar(text, value, endvalue, bar_length=20):
     percent = float(value) / endvalue
