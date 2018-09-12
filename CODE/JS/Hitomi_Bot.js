@@ -1,4 +1,3 @@
 /*
 Hitomi_Bot
 */
-'
